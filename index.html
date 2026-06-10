@@ -102,11 +102,20 @@
                 transform: translateY(-8px);
             }
         }
+
+        /* Hide scrollbar utility */
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 
 <body
-    class="bg-[#f0f4f8] font-afacad min-h-screen py-6 px-4 flex flex-col items-center justify-center relative overflow-x-hidden select-none">
+    class="bg-[#f0f4f8] font-afacad min-h-screen p-2 md:p-6 flex flex-col justify-center items-center relative overflow-x-hidden select-none">
 
     <!-- Notification Toast System (No alert() used) -->
     <div id="toast"
@@ -117,7 +126,7 @@
 
     <!-- Main Interactive Book Container -->
     <main
-        class="w-full max-w-5xl bg-brandCream neo-border rounded-[40px] neo-shadow-lg flex flex-col relative overflow-hidden min-h-[680px]">
+        class="w-full max-w-5xl bg-brandCream neo-border rounded-[24px] md:rounded-[40px] neo-shadow-lg flex flex-col relative overflow-hidden min-h-0 md:min-h-[650px]">
         <!-- Dot Grid Pattern -->
         <div class="absolute inset-0 comic-bg pointer-events-none"></div>
 
@@ -178,7 +187,7 @@
         </nav>
 
         <!-- PAGES CONTAINER -->
-        <div class="flex-grow p-6 md:p-8 flex flex-col justify-between relative z-10">
+        <div class="flex-grow p-4 md:p-8 flex flex-col justify-between relative z-10">
 
             <!-- PAGE 1: PETA MISI (APA ITU HUKUM?) -->
             <section id="page-1" class="page-content flex flex-col gap-6">
@@ -261,7 +270,7 @@
                         class="inline-block bg-[#fdd5bd] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase">
                         Misi Kedua: Kekuatan & Kewajiban
                     </div>
-                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Kekuatan Super &amp; Tugas Penting Agen
+                    <h2 class="font-comfortaa font-bold text-2xl md:text-3xl text-brandDark">Kekuatan Super &amp; Tugas Penting Agen
                         🌟</h2>
                     <p class="text-base text-slate-700">Sebagai agen pelindung kedamaian, kamu diberi <strong>Hak
                             (Kekuatan Super)</strong> dan <strong>Kewajiban (Tugas Penting)</strong>. Mari aktifkan
@@ -355,7 +364,7 @@
                         class="inline-block bg-[#fca5a5] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase text-slate-800">
                         Misi Ketiga: Pembasmi Monster
                     </div>
-                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Katakan STOP pada Monster Bullying! 🚫
+                    <h2 class="font-comfortaa font-bold text-2xl md:text-3xl text-brandDark">Katakan STOP pada Monster Bullying! 🚫
                     </h2>
                     <p class="text-base text-slate-700">Bullying atau perundungan adalah monster jahat yang merusak
                         kedamaian kelas kita. Ketuk monster di bawah ini untuk <strong>mengaktifkan perisai
@@ -438,7 +447,7 @@
                         class="inline-block bg-[#fef08a] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase text-slate-800">
                         Misi Keempat: Batasan Aman
                     </div>
-                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Menjaga Batas Tubuh &amp; Hak Barang
+                    <h2 class="font-comfortaa font-bold text-2xl md:text-3xl text-brandDark">Menjaga Batas Tubuh &amp; Hak Barang
                         Milik Teman 🚦</h2>
                     <p class="text-base text-slate-700">Tubuh dan barang berharga kita sangat penting. Gunakan sistem
                         lampu rambu lintas di bawah untuk menguji batas aman kita!</p>
@@ -447,15 +456,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                     <!-- Traffic Light Simulator Display (Left) -->
                     <div
-                        class="md:col-span-4 bg-[#1e293b] rounded-3xl p-6 flex flex-col items-center gap-4 neo-shadow-lg max-w-[220px] mx-auto w-full border-4 border-slate-700">
+                        class="md:col-span-4 bg-[#1e293b] rounded-3xl p-4 md:p-6 flex flex-row md:flex-col items-center justify-center gap-4 neo-shadow-lg max-w-[320px] md:max-w-[220px] mx-auto w-full border-4 border-slate-700">
                         <div id="light-red"
-                            class="w-16 h-16 rounded-full border-4 border-slate-900 bg-red-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-slate-900 bg-red-950 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
                             🛑</div>
                         <div id="light-yellow"
-                            class="w-16 h-16 rounded-full border-4 border-slate-900 bg-yellow-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-slate-900 bg-yellow-950 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
                             ⚠️</div>
                         <div id="light-green"
-                            class="w-16 h-16 rounded-full border-4 border-slate-900 bg-emerald-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
+                            class="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-slate-900 bg-emerald-950 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
                             ✅</div>
                     </div>
 
@@ -508,7 +517,7 @@
                         class="inline-block bg-[#dcfd8b] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase text-slate-800">
                         Kelulusan Agen
                     </div>
-                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Sertifikat Komitmen Agen Kedamaian 🏆
+                    <h2 class="font-comfortaa font-bold text-2xl md:text-3xl text-brandDark">Sertifikat Komitmen Agen Kedamaian 🏆
                     </h2>
                     <p class="text-base text-slate-700">Tulis nama sandi pahlawanmu dan tandatangani komitmen ini untuk
                         mendapatkan cap lencana pahlawanmu!</p>
@@ -603,7 +612,7 @@
                         </p>
 
                         <!-- Bottom Signature & Badge Stamp -->
-                        <div class="flex justify-around items-center mt-4">
+                        <div class="flex flex-row justify-around items-center gap-2 flex-wrap mt-4">
                             <!-- Signature visualizer -->
                             <div class="flex flex-col items-center">
                                 <div class="h-10 w-28 flex items-center justify-center overflow-hidden">
@@ -802,6 +811,38 @@
                 drawing = false;
                 updateSignaturePreview();
             });
+
+            // Handle window resizing dynamically to prevent distortion
+            if (!window.canvasResizeHandlerAdded) {
+                window.addEventListener('resize', () => {
+                    if (currentPage === 5 && canvas) {
+                        const isDrawn = !document.getElementById('signature-preview').classList.contains('hidden');
+                        let tempCanvas = null;
+                        if (isDrawn) {
+                            tempCanvas = document.createElement('canvas');
+                            tempCanvas.width = canvas.width;
+                            tempCanvas.height = canvas.height;
+                            tempCanvas.getContext('2d').drawImage(canvas, 0, 0);
+                        }
+
+                        // Adjust canvas width and height
+                        canvas.width = canvas.parentElement.clientWidth;
+                        canvas.height = canvas.parentElement.clientHeight;
+
+                        // Reinitialize stroke styles
+                        ctx.lineWidth = 3;
+                        ctx.lineCap = 'round';
+                        ctx.strokeStyle = '#1e293b';
+
+                        // Restore original drawings scaled to fit the new size
+                        if (isDrawn && tempCanvas) {
+                            ctx.drawImage(tempCanvas, 0, 0, tempCanvas.width, tempCanvas.height, 0, 0, canvas.width, canvas.height);
+                            updateSignaturePreview();
+                        }
+                    }
+                });
+                window.canvasResizeHandlerAdded = true;
+            }
         }
 
         function draw(e) {
@@ -1032,17 +1073,17 @@
             const feedback = document.getElementById('scenario-feedback');
 
             // Reset light backgrounds
-            document.getElementById('light-red').className = "w-16 h-16 rounded-full border-4 border-slate-900 bg-red-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
-            document.getElementById('light-yellow').className = "w-16 h-16 rounded-full border-4 border-slate-900 bg-yellow-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
-            document.getElementById('light-green').className = "w-16 h-16 rounded-full border-4 border-slate-900 bg-emerald-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
+            document.getElementById('light-red').className = "w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-slate-900 bg-red-950 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
+            document.getElementById('light-yellow').className = "w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-slate-900 bg-yellow-950 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
+            document.getElementById('light-green').className = "w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-slate-900 bg-emerald-950 transition-all duration-300 flex items-center justify-center text-lg md:text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
 
             // Turn on selected light visually
             if (color === 'red') {
-                document.getElementById('light-red').className = "w-16 h-16 rounded-full border-4 border-brandDark bg-red-500 flex items-center justify-center text-2xl shadow-[0_0_20px_#ef4444]";
+                document.getElementById('light-red').className = "w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-brandDark bg-red-500 flex items-center justify-center text-xl md:text-2xl shadow-[0_0_20px_#ef4444]";
             } else if (color === 'yellow') {
-                document.getElementById('light-yellow').className = "w-16 h-16 rounded-full border-4 border-brandDark bg-yellow-400 flex items-center justify-center text-2xl shadow-[0_0_20px_#facc15]";
+                document.getElementById('light-yellow').className = "w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-brandDark bg-yellow-400 flex items-center justify-center text-xl md:text-2xl shadow-[0_0_20px_#facc15]";
             } else if (color === 'green') {
-                document.getElementById('light-green').className = "w-16 h-16 rounded-full border-4 border-brandDark bg-emerald-400 flex items-center justify-center text-2xl shadow-[0_0_20px_#34d399]";
+                document.getElementById('light-green').className = "w-12 h-12 md:w-16 md:h-16 rounded-full border-4 border-brandDark bg-emerald-400 flex items-center justify-center text-xl md:text-2xl shadow-[0_0_20px_#34d399]";
             }
 
             if (color === activeScenario.correct) {
