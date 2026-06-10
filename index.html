@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Legal Guide - Agen Kedamaian Cilik</title>
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Afacad+Flux:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#1e293b',
+                        brandCream: '#fffaf1',
+                        brandLime: '#dcfd8b',
+                        brandPeach: '#fdd5bd',
+                        brandPurple: '#e1c4ff',
+                        brandBlue: '#bae6fd',
+                    },
+                    fontFamily: {
+                        comfortaa: ['Comfortaa', 'sans-serif'],
+                        afacad: ['Afacad Flux', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Neo-Brutalist shadow styling custom */
+        .neo-border {
+            border: 4px solid #1e293b;
+        }
+
+        .neo-shadow {
+            box-shadow: 6px 6px 0px 0px #1e293b;
+        }
+
+        .neo-shadow-sm {
+            box-shadow: 3px 3px 0px 0px #1e293b;
+        }
+
+        .neo-shadow-lg {
+            box-shadow: 10px 10px 0px 0px #1e293b;
+        }
+
+        .active-tab {
+            background-color: #dcfd8b !important;
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 0px 0px #1e293b !important;
+        }
+
+        /* Comic-book pattern background */
+        .comic-bg {
+            background-image: radial-gradient(#1e293b 1.5px, transparent 1.5px);
+            background-size: 20px 20px;
+            opacity: 0.04;
+        }
+
+        /* Particle confetti emitter */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            animation: blow-up 0.8s ease-out forwards;
+        }
+
+        @keyframes blow-up {
+            0% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        /* Custom Bounce Animation for elements */
+        .bounce-gentle {
+            animation: bounceGentle 2s infinite alternate;
+        }
+
+        @keyframes bounceGentle {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-8px);
+            }
+        }
+    </style>
+</head>
+
+<body
+    class="bg-[#f0f4f8] font-afacad min-h-screen py-6 px-4 flex flex-col items-center justify-center relative overflow-x-hidden select-none">
+
+    <!-- Notification Toast System (No alert() used) -->
+    <div id="toast"
+        class="fixed top-5 z-50 transform -translate-y-20 opacity-0 transition-all duration-300 neo-border bg-[#e1c4ff] text-brandDark px-6 py-3 rounded-2xl neo-shadow flex items-center gap-3 font-comfortaa font-bold text-sm md:text-base">
+        <span id="toast-icon"><i class="fa-solid fa-star text-yellow-400"></i></span>
+        <span id="toast-message">Misi berhasil diselesaikan!</span>
+    </div>
+
+    <!-- Main Interactive Book Container -->
+    <main
+        class="w-full max-w-5xl bg-brandCream neo-border rounded-[40px] neo-shadow-lg flex flex-col relative overflow-hidden min-h-[680px]">
+        <!-- Dot Grid Pattern -->
+        <div class="absolute inset-0 comic-bg pointer-events-none"></div>
+
+        <!-- Upper Banner: Kid-friendly Stats Bar -->
+        <header
+            class="w-full bg-[#bae6fd] border-b-4 border-brandDark p-4 md:px-8 flex flex-wrap gap-4 items-center justify-between relative z-10">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-[#dcfd8b] neo-border rounded-xl flex items-center justify-center text-xl neo-shadow-sm">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <h1 class="font-comfortaa font-bold text-brandDark text-sm md:text-lg leading-none">AGEN KEDAMAIAN
+                        CILIK</h1>
+                    <span class="text-xs text-slate-700 font-semibold tracking-wider block">PANDUAN HUKUM
+                        SEHARI-HARI</span>
+                    <span class="text-[10px] text-slate-600 font-bold tracking-wider block mt-0.5">by Shaqila Putri
+                        Nuri</span>
+                </div>
+            </div>
+
+            <!-- Agent Level Tracker (Gamified Leveling) -->
+            <div class="flex items-center gap-3">
+                <div class="text-right">
+                    <p class="text-xs font-bold text-slate-700">STATUS AGEN:</p>
+                    <p id="agent-rank-text" class="text-sm font-comfortaa font-bold text-brandDark">Calon Agen ⭐</p>
+                </div>
+                <div class="w-24 md:w-32 bg-white neo-border h-5 rounded-full overflow-hidden p-0.5 flex items-center">
+                    <div id="level-progress-bar"
+                        class="bg-[#dcfd8b] h-full rounded-full transition-all duration-500 w-[10%]"></div>
+                </div>
+                <span id="progress-percentage-text" class="text-sm font-bold font-comfortaa text-brandDark">10%</span>
+            </div>
+        </header>
+
+        <!-- Dynamic Halaman Navigation Tab -->
+        <nav class="flex border-b-4 border-brandDark bg-white overflow-x-auto relative z-10 scrollbar-none">
+            <button onclick="changePage(1)" id="tab-1"
+                class="flex-1 py-3 px-4 text-center font-comfortaa font-bold border-r-4 border-brandDark text-xs md:text-sm whitespace-nowrap transition-all duration-200 hover:bg-[#fffaf1]">
+                📖 Hal 1: Peta Misi
+            </button>
+            <button onclick="changePage(2)" id="tab-2"
+                class="flex-1 py-3 px-4 text-center font-comfortaa font-bold border-r-4 border-brandDark text-xs md:text-sm whitespace-nowrap transition-all duration-200 hover:bg-[#fffaf1]">
+                🌟 Hal 2: Hak & Tugas
+            </button>
+            <button onclick="changePage(3)" id="tab-3"
+                class="flex-1 py-3 px-4 text-center font-comfortaa font-bold border-r-4 border-brandDark text-xs md:text-sm whitespace-nowrap transition-all duration-200 hover:bg-[#fffaf1]">
+                🚫 Hal 3: Lawan Bullying
+            </button>
+            <button onclick="changePage(4)" id="tab-4"
+                class="flex-1 py-3 px-4 text-center font-comfortaa font-bold border-r-4 border-brandDark text-xs md:text-sm whitespace-nowrap transition-all duration-200 hover:bg-[#fffaf1]">
+                🚦 Hal 4: Batas Aman
+            </button>
+            <button onclick="changePage(5)" id="tab-5"
+                class="flex-1 py-3 px-4 text-center font-comfortaa font-bold text-xs md:text-sm whitespace-nowrap transition-all duration-200 hover:bg-[#fffaf1]">
+                🏆 Hal 5: Janji Agen
+            </button>
+        </nav>
+
+        <!-- PAGES CONTAINER -->
+        <div class="flex-grow p-6 md:p-8 flex flex-col justify-between relative z-10">
+
+            <!-- PAGE 1: PETA MISI (APA ITU HUKUM?) -->
+            <section id="page-1" class="page-content flex flex-col gap-6">
+                <div class="flex flex-col md:flex-row gap-6 items-center">
+                    <div class="flex-1 space-y-4">
+                        <div
+                            class="inline-block bg-[#e1c4ff] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase">
+                            Misi Pembuka: Mengenal Aturan
+                        </div>
+                        <h2 class="font-comfortaa font-bold text-3xl md:text-4xl text-brandDark leading-tight">
+                            Selamat Datang, Calon Agen Kedamaian! 🗺️
+                        </h2>
+                        <p class="text-lg md:text-xl text-slate-700 leading-relaxed">
+                            Kamu terpilih karena kamu adalah anak yang hebat dan peduli sesama! Di dunia ini, ada
+                            petunjuk rahasia yang disebut dengan <strong
+                                class="underline decoration-indigo-400 decoration-3">Hukum atau Aturan</strong>.
+                        </p>
+                        <div class="bg-white p-4 neo-border rounded-2xl neo-shadow-sm border-l-8 border-l-[#dcfd8b]">
+                            <p class="font-bold text-base text-brandDark">
+                                🤔 Hukum itu seperti apa, ya?
+                            </p>
+                            <p class="text-sm text-slate-600">
+                                Sederhana sekali! Hukum itu sama seperti <strong>aturan bermain sepak bola atau
+                                    bentengan</strong>. Aturan membuat semua orang bahagia, tertib, dan tidak berebutan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Aturan Main (Interactive Graphic) -->
+                    <div
+                        class="w-full md:w-[400px] bg-white rounded-3xl neo-border p-5 neo-shadow relative flex flex-col gap-4">
+                        <span
+                            class="absolute -top-3 -right-3 bg-red-400 text-white neo-border w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold animate-pulse">LIVE</span>
+                        <h3 class="font-comfortaa font-bold text-center text-brandDark text-sm">⚽ ATURAN GAME SIMULATOR
+                        </h3>
+
+                        <div id="simulator-screen"
+                            class="h-44 rounded-2xl neo-border bg-[#e1f3f9] relative overflow-hidden flex flex-col items-center justify-center transition-all duration-300">
+                            <!-- Visual chaos elements (Page 1 Simulator state) -->
+                            <div id="sim-chaos" class="flex flex-col items-center justify-center gap-1">
+                                <div class="flex gap-4">
+                                    <span class="text-3xl animate-bounce">😡</span>
+                                    <span class="text-3xl animate-pulse">⚽💨</span>
+                                    <span class="text-3xl animate-bounce">😭</span>
+                                </div>
+                                <p class="text-xs font-bold text-red-500 mt-2 font-comfortaa">Tanpa Aturan: Kacau,
+                                    Berebutan, Menangis!</p>
+                            </div>
+                            <!-- Visual fair elements (Page 1 Simulator state) -->
+                            <div id="sim-peace" class="hidden flex-col items-center justify-center gap-1">
+                                <div class="flex gap-6">
+                                    <span class="text-3xl animate-bounce">😊</span>
+                                    <span class="text-3xl">🤝</span>
+                                    <span class="text-3xl animate-bounce">🏆</span>
+                                </div>
+                                <p class="text-xs font-bold text-emerald-600 mt-2 font-comfortaa">Dengan Aturan: Semua
+                                    Ceria & Tertib!</p>
+                            </div>
+                        </div>
+
+                        <!-- Simulator Control Switcher -->
+                        <div class="flex gap-2">
+                            <button onclick="toggleSimulator('chaos')" id="sim-btn-chaos"
+                                class="flex-1 py-2 rounded-xl text-xs font-bold neo-border neo-shadow-sm bg-red-300 text-brandDark transition-all duration-200">
+                                Main Tanpa Aturan
+                            </button>
+                            <button onclick="toggleSimulator('peace')" id="sim-btn-peace"
+                                class="flex-1 py-2 rounded-xl text-xs font-bold neo-border neo-shadow-sm bg-white text-brandDark transition-all duration-200">
+                                Main Dengan Aturan ✅
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 2: HAK & KEWAJIBAN (KEKUATAN & TUGASMU) -->
+            <section id="page-2" class="page-content hidden flex flex-col gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <div
+                        class="inline-block bg-[#fdd5bd] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase">
+                        Misi Kedua: Kekuatan & Kewajiban
+                    </div>
+                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Kekuatan Super &amp; Tugas Penting Agen
+                        🌟</h2>
+                    <p class="text-base text-slate-700">Sebagai agen pelindung kedamaian, kamu diberi <strong>Hak
+                            (Kekuatan Super)</strong> dan <strong>Kewajiban (Tugas Penting)</strong>. Mari aktifkan
+                        semuanya!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Column 1: Power (Hak) -->
+                    <div class="bg-[#e1c4ff] rounded-3xl neo-border p-5 neo-shadow flex flex-col gap-4">
+                        <h3 class="font-comfortaa font-bold text-xl text-brandDark flex items-center gap-2">
+                            <span class="p-1.5 bg-white rounded-xl neo-border text-xs"><i
+                                    class="fa-solid fa-wand-magic-sparkles text-purple-600"></i></span>
+                            Kekuatan Supermu (Hak)
+                        </h3>
+                        <p class="text-xs text-slate-700">Klik kartu di bawah ini untuk melihat hak yang dilindungi oleh
+                            hukum kedamaian!</p>
+
+                        <div class="flex flex-col gap-2">
+                            <button onclick="unlockPower('hak1', 'Dapatkan kasih sayang berlimpah di rumah 🏠')"
+                                id="power-hak1"
+                                class="p-3 text-left bg-white neo-border rounded-xl text-sm font-bold flex justify-between items-center hover:bg-slate-50 transition-all duration-150">
+                                <span>1. Cinta &amp; Kasih Sayang</span>
+                                <span class="badge-status text-slate-400 text-xs"><i
+                                        class="fa-regular fa-circle"></i></span>
+                            </button>
+                            <button onclick="unlockPower('hak2', 'Sekolah yang ramah, asyik, dan pintar 🎒')"
+                                id="power-hak2"
+                                class="p-3 text-left bg-white neo-border rounded-xl text-sm font-bold flex justify-between items-center hover:bg-slate-50 transition-all duration-150">
+                                <span>2. Pendidikan yang Seru</span>
+                                <span class="badge-status text-slate-400 text-xs"><i
+                                        class="fa-regular fa-circle"></i></span>
+                            </button>
+                            <button onclick="unlockPower('hak3', 'Waktu yang aman untuk main bersama teman 🧸')"
+                                id="power-hak3"
+                                class="p-3 text-left bg-white neo-border rounded-xl text-sm font-bold flex justify-between items-center hover:bg-slate-50 transition-all duration-150">
+                                <span>3. Bermain dengan Gembira</span>
+                                <span class="badge-status text-slate-400 text-xs"><i
+                                        class="fa-regular fa-circle"></i></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Duties (Kewajiban) -->
+                    <div class="bg-[#fdd5bd] rounded-3xl neo-border p-5 neo-shadow flex flex-col gap-4">
+                        <h3 class="font-comfortaa font-bold text-xl text-brandDark flex items-center gap-2">
+                            <span class="p-1.5 bg-white rounded-xl neo-border text-xs"><i
+                                    class="fa-solid fa-shield-halved text-orange-600"></i></span>
+                            Tugas Pentingmu (Kewajiban)
+                        </h3>
+                        <p class="text-xs text-slate-700">Klik untuk menyalakan komitmen menjalankan tugas rahasiamu!
+                        </p>
+
+                        <div class="flex flex-col gap-2">
+                            <button
+                                onclick="unlockPower('tugas1', 'Mendengar nasihat orang tua dan guru dengan baik 🧑‍🏫')"
+                                id="power-tugas1"
+                                class="p-3 text-left bg-white neo-border rounded-xl text-sm font-bold flex justify-between items-center hover:bg-slate-50 transition-all duration-150">
+                                <span>1. Hormat pada Ortu &amp; Guru</span>
+                                <span class="badge-status text-slate-400 text-xs"><i
+                                        class="fa-regular fa-circle"></i></span>
+                            </button>
+                            <button onclick="unlockPower('tugas2', 'Belajar dengan sungguh-sungguh tanpa malas 📚')"
+                                id="power-tugas2"
+                                class="p-3 text-left bg-white neo-border rounded-xl text-sm font-bold flex justify-between items-center hover:bg-slate-50 transition-all duration-150">
+                                <span>2. Belajar Giat</span>
+                                <span class="badge-status text-slate-400 text-xs"><i
+                                        class="fa-regular fa-circle"></i></span>
+                            </button>
+                            <button onclick="unlockPower('tugas3', 'Saling menyayangi tanpa pandang perbedaan 🤝')"
+                                id="power-tugas3"
+                                class="p-3 text-left bg-white neo-border rounded-xl text-sm font-bold flex justify-between items-center hover:bg-slate-50 transition-all duration-150">
+                                <span>3. Menghargai Teman</span>
+                                <span class="badge-status text-slate-400 text-xs"><i
+                                        class="fa-regular fa-circle"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Power Display info -->
+                <div id="power-details-box"
+                    class="text-center p-3 neo-border bg-[#dcfd8b] rounded-2xl neo-shadow-sm font-bold text-sm hidden">
+                    Power Info Box
+                </div>
+            </section>
+
+            <!-- PAGE 3: LAWAN MONSTER BULLYING -->
+            <section id="page-3" class="page-content hidden flex flex-col gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <div
+                        class="inline-block bg-[#fca5a5] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase text-slate-800">
+                        Misi Ketiga: Pembasmi Monster
+                    </div>
+                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Katakan STOP pada Monster Bullying! 🚫
+                    </h2>
+                    <p class="text-base text-slate-700">Bullying atau perundungan adalah monster jahat yang merusak
+                        kedamaian kelas kita. Ketuk monster di bawah ini untuk <strong>mengaktifkan perisai
+                            pelindung</strong>!</p>
+                </div>
+
+                <!-- Monster Interactive Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Monster 1 Card -->
+                    <div id="monster-card-1"
+                        class="bg-[#fee2e2] rounded-3xl neo-border p-5 neo-shadow flex flex-col items-center justify-between text-center gap-4 transition-all duration-300">
+                        <div class="text-5xl my-2 bounce-gentle" id="monster-icon-1">👹</div>
+                        <div>
+                            <h3 class="font-comfortaa font-bold text-lg text-brandDark">Monster Kata-Kata</h3>
+                            <p class="text-xs text-slate-600 mt-1">Suka mengejek nama orang tua, menghina fisik, dan
+                                menyoraki teman.</p>
+                        </div>
+                        <button onclick="defeatMonster(1, 'Berhasil menangkis Monster Kata-kata! 💬')"
+                            id="monster-btn-1"
+                            class="w-full py-2 bg-rose-400 text-brandDark neo-border rounded-xl font-bold text-sm neo-shadow-sm hover:bg-rose-500 transition-all">
+                            Tangkap Monster!
+                        </button>
+                    </div>
+
+                    <!-- Monster 2 Card -->
+                    <div id="monster-card-2"
+                        class="bg-[#fee2e2] rounded-3xl neo-border p-5 neo-shadow flex flex-col items-center justify-between text-center gap-4 transition-all duration-300">
+                        <div class="text-5xl my-2 bounce-gentle" id="monster-icon-2">👾</div>
+                        <div>
+                            <h3 class="font-comfortaa font-bold text-lg text-brandDark">Monster Fisik</h3>
+                            <p class="text-xs text-slate-600 mt-1">Suka memukul, mendorong, menjegal, atau merusak
+                                barang milik orang.</p>
+                        </div>
+                        <button onclick="defeatMonster(2, 'Berhasil memadamkan kekerasan Monster Fisik! 🛡️')"
+                            id="monster-btn-2"
+                            class="w-full py-2 bg-rose-400 text-brandDark neo-border rounded-xl font-bold text-sm neo-shadow-sm hover:bg-rose-500 transition-all">
+                            Tangkap Monster!
+                        </button>
+                    </div>
+
+                    <!-- Monster 3 Card -->
+                    <div id="monster-card-3"
+                        class="bg-[#fee2e2] rounded-3xl neo-border p-5 neo-shadow flex flex-col items-center justify-between text-center gap-4 transition-all duration-300">
+                        <div class="text-5xl my-2 bounce-gentle" id="monster-icon-3">👽</div>
+                        <div>
+                            <h3 class="font-comfortaa font-bold text-lg text-brandDark">Monster Pengucilan</h3>
+                            <p class="text-xs text-slate-600 mt-1">Sengaja menjauhi teman atau melarang anak baru ikut
+                                bermain bersama.</p>
+                        </div>
+                        <button onclick="defeatMonster(3, 'Monster Pengucilan diajak berteman baik! 🤝')"
+                            id="monster-btn-3"
+                            class="w-full py-2 bg-rose-400 text-brandDark neo-border rounded-xl font-bold text-sm neo-shadow-sm hover:bg-rose-500 transition-all">
+                            Tangkap Monster!
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emergency Instructions Box -->
+                <div
+                    class="bg-white p-4 neo-border rounded-2xl neo-shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">📢</span>
+                        <div>
+                            <p class="font-bold text-brandDark text-sm">Ingat Protokol Darurat Agen Kedamaian:</p>
+                            <p class="text-xs text-slate-600">Jika kamu melihat atau mengalami bullying, teriaklah
+                                <strong>"STOP!"</strong> lalu segera lapor ke Bapak/Ibu guru atau orang tuamu!</p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-[#dcfd8b] neo-border rounded-xl px-4 py-2 font-comfortaa font-bold text-xs neo-shadow-sm">
+                        Melapor itu PEMBERANI! 💪
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 4: MENJAGA BATAS TUBUH & BARANG -->
+            <section id="page-4" class="page-content hidden flex flex-col gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <div
+                        class="inline-block bg-[#fef08a] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase text-slate-800">
+                        Misi Keempat: Batasan Aman
+                    </div>
+                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Menjaga Batas Tubuh &amp; Hak Barang
+                        Milik Teman 🚦</h2>
+                    <p class="text-base text-slate-700">Tubuh dan barang berharga kita sangat penting. Gunakan sistem
+                        lampu rambu lintas di bawah untuk menguji batas aman kita!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                    <!-- Traffic Light Simulator Display (Left) -->
+                    <div
+                        class="md:col-span-4 bg-[#1e293b] rounded-3xl p-6 flex flex-col items-center gap-4 neo-shadow-lg max-w-[220px] mx-auto w-full border-4 border-slate-700">
+                        <div id="light-red"
+                            class="w-16 h-16 rounded-full border-4 border-slate-900 bg-red-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
+                            🛑</div>
+                        <div id="light-yellow"
+                            class="w-16 h-16 rounded-full border-4 border-slate-900 bg-yellow-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
+                            ⚠️</div>
+                        <div id="light-green"
+                            class="w-16 h-16 rounded-full border-4 border-slate-900 bg-emerald-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]">
+                            ✅</div>
+                    </div>
+
+                    <!-- Interactive Questions Card (Right) -->
+                    <div class="md:col-span-8 bg-white rounded-3xl neo-border p-5 neo-shadow space-y-4">
+                        <h3 class="font-comfortaa font-bold text-lg text-brandDark text-center md:text-left">🧭 TES
+                            RADIUS BATASAN AMAN</h3>
+                        <p class="text-xs text-slate-600 text-center md:text-left">Bacalah skenario berikut lalu tekan
+                            lampu lalu lintas yang tepat!</p>
+
+                        <!-- Skenario Box -->
+                        <div id="scenario-container"
+                            class="bg-[#bae6fd] p-4 rounded-2xl neo-border neo-shadow-sm text-center md:text-left min-h-[100px] flex flex-col justify-center">
+                            <p id="scenario-question-title" class="font-bold text-xs text-slate-700 uppercase">Skenario
+                                1 dari 3</p>
+                            <p id="scenario-text"
+                                class="text-sm md:text-base font-comfortaa font-bold text-brandDark mt-1">"Bolehkah
+                                meminjam pensil teman tanpa meminta izin?"</p>
+                        </div>
+
+                        <!-- User Choice Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="submitScenarioChoice('red')"
+                                class="flex-1 py-3 bg-red-300 text-brandDark font-comfortaa font-bold rounded-xl neo-border neo-shadow-sm hover:bg-red-400 transition-all text-xs md:text-sm">
+                                🟥 MERAH (STOP / TIDAK!)
+                            </button>
+                            <button onclick="submitScenarioChoice('yellow')"
+                                class="flex-1 py-3 bg-yellow-200 text-brandDark font-comfortaa font-bold rounded-xl neo-border neo-shadow-sm hover:bg-yellow-300 transition-all text-xs md:text-sm">
+                                🟨 KUNING (IZIN DULU)
+                            </button>
+                            <button onclick="submitScenarioChoice('green')"
+                                class="flex-1 py-3 bg-emerald-200 text-brandDark font-comfortaa font-bold rounded-xl neo-border neo-shadow-sm hover:bg-emerald-300 transition-all text-xs md:text-sm">
+                                🟩 HIJAU (BAGUS / BERBAGI)
+                            </button>
+                        </div>
+
+                        <!-- Feedback area -->
+                        <div id="scenario-feedback"
+                            class="hidden p-3 bg-[#e1c4ff] rounded-xl neo-border text-xs font-bold text-brandDark text-center animate-bounce">
+                            Bagus sekali! Selalu tanyakan dan minta izin ya.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE 5: JURNAL AGEN & CAP KOMITMEN -->
+            <section id="page-5" class="page-content hidden flex flex-col gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <div
+                        class="inline-block bg-[#dcfd8b] neo-border rounded-full px-4 py-1.5 text-xs font-bold neo-shadow-sm uppercase text-slate-800">
+                        Kelulusan Agen
+                    </div>
+                    <h2 class="font-comfortaa font-bold text-3xl text-brandDark">Sertifikat Komitmen Agen Kedamaian 🏆
+                    </h2>
+                    <p class="text-base text-slate-700">Tulis nama sandi pahlawanmu dan tandatangani komitmen ini untuk
+                        mendapatkan cap lencana pahlawanmu!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+                    <!-- Form Editor (Left) -->
+                    <div
+                        class="md:col-span-5 bg-white rounded-3xl neo-border p-5 neo-shadow flex flex-col justify-between gap-4">
+                        <h3 class="font-comfortaa font-bold text-sm text-brandDark">⚙️ KUSTOMISASI SERTIFIKAT</h3>
+
+                        <!-- Name Input -->
+                        <div class="space-y-1">
+                            <label for="input-agent-name" class="text-xs font-bold text-slate-700 block">Nama Sandi Agen
+                                Kamu:</label>
+                            <input oninput="updateCertificate()" type="text" id="input-agent-name"
+                                placeholder="Contoh: Agen Gembira"
+                                class="w-full p-2.5 rounded-xl neo-border text-sm font-comfortaa focus:outline-none focus:bg-yellow-50 bg-slate-50">
+                        </div>
+
+                        <!-- Avatar Picker -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-700 block">Pilih Lambang Avatar:</label>
+                            <div class="flex gap-2 justify-between">
+                                <button onclick="selectAvatar('🐢')" id="btn-avatar-turtle"
+                                    class="w-10 h-10 rounded-xl bg-slate-100 border-2 border-slate-300 text-xl hover:bg-slate-200 transition-colors flex items-center justify-center">🐢</button>
+                                <button onclick="selectAvatar('🐱')" id="btn-avatar-cat"
+                                    class="w-10 h-10 rounded-xl bg-brandLime border-2 border-brandDark text-xl flex items-center justify-center shadow-md">🐱</button>
+                                <button onclick="selectAvatar('🐧')" id="btn-avatar-penguin"
+                                    class="w-10 h-10 rounded-xl bg-slate-100 border-2 border-slate-300 text-xl hover:bg-slate-200 transition-colors flex items-center justify-center">🐧</button>
+                                <button onclick="selectAvatar('🐯')" id="btn-avatar-tiger"
+                                    class="w-10 h-10 rounded-xl bg-slate-100 border-2 border-slate-300 text-xl hover:bg-slate-200 transition-colors flex items-center justify-center">🐯</button>
+                                <button onclick="selectAvatar('🐰')" id="btn-avatar-rabbit"
+                                    class="w-10 h-10 rounded-xl bg-slate-100 border-2 border-slate-300 text-xl hover:bg-slate-200 transition-colors flex items-center justify-center">🐰</button>
+                            </div>
+                        </div>
+
+                        <!-- Signature Pad -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between items-center">
+                                <label class="text-xs font-bold text-slate-700">Tanda Tangan Digital:</label>
+                                <button onclick="clearSignatureCanvas()"
+                                    class="text-[10px] text-red-500 hover:underline font-bold">Hapus Corat-coret
+                                    ❌</button>
+                            </div>
+                            <div
+                                class="bg-slate-100 neo-border rounded-xl h-24 overflow-hidden relative cursor-crosshair">
+                                <canvas id="signature-canvas" class="w-full h-full block bg-[#fffdfa]"></canvas>
+                                <p
+                                    class="absolute bottom-1 right-2 text-[9px] text-slate-400 font-semibold pointer-events-none">
+                                    Goreskan jari / mouse di sini</p>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button onclick="sealCertificate()"
+                            class="w-full py-3 bg-[#dcfd8b] text-brandDark font-comfortaa font-bold rounded-xl neo-border neo-shadow-sm hover:bg-[#c9ef6b] transition-all text-xs">
+                            🔒 Kunci & Cap Komitmen!
+                        </button>
+                    </div>
+
+                    <!-- Certificate Display (Right) -->
+                    <div id="certificate-card"
+                        class="md:col-span-7 bg-[#fffdf5] rounded-3xl neo-border p-6 neo-shadow-lg flex flex-col justify-between text-center relative border-dashed border-4 border-orange-300 min-h-[360px]">
+                        <!-- Elegant Corners -->
+                        <div class="absolute top-2 left-2 text-xs text-orange-400 font-bold">✦</div>
+                        <div class="absolute top-2 right-2 text-xs text-orange-400 font-bold">✦</div>
+                        <div class="absolute bottom-2 left-2 text-xs text-orange-400 font-bold">✦</div>
+                        <div class="absolute bottom-2 right-2 text-xs text-orange-400 font-bold">✦</div>
+
+                        <div class="space-y-2">
+                            <p
+                                class="font-comfortaa text-brandDark text-xs tracking-widest font-bold text-orange-600 uppercase">
+                                Sertifikat Kelulusan Misi</p>
+                            <h4 class="font-comfortaa text-2xl md:text-3xl font-bold text-brandDark leading-none">AGEN
+                                KEDAMAIAN SEJATI</h4>
+                            <p class="text-xs text-slate-500">Sertifikat ini secara sah menyatakan bahwa:</p>
+                        </div>
+
+                        <!-- Middle Name Section -->
+                        <div class="my-3 py-1 border-b border-dashed border-slate-300 max-w-xs mx-auto">
+                            <p id="cert-agent-avatar" class="text-3xl mb-1 bounce-gentle">🐱</p>
+                            <p id="cert-agent-name"
+                                class="font-comfortaa font-bold text-xl md:text-2xl text-slate-800 italic underline">
+                                Agen Rahasia</p>
+                        </div>
+
+                        <!-- Pledge details -->
+                        <p class="text-xs text-slate-600 max-w-sm mx-auto leading-relaxed italic">
+                            "Berjanji akan menjadi anak yang jujur, saling menghargai barang milik teman, menjaga batas
+                            perlindungan tubuh, serta menjaga perdamaian di lingkungan sekolah dan rumah."
+                        </p>
+
+                        <!-- Bottom Signature & Badge Stamp -->
+                        <div class="flex justify-around items-center mt-4">
+                            <!-- Signature visualizer -->
+                            <div class="flex flex-col items-center">
+                                <div class="h-10 w-28 flex items-center justify-center overflow-hidden">
+                                    <img id="signature-preview" src="" alt="" class="max-h-full max-w-full hidden">
+                                    <p id="signature-placeholder" class="text-[10px] text-slate-400 italic">Belum Tanda
+                                        Tangan</p>
+                                </div>
+                                <span class="w-24 h-0.5 bg-slate-400 mt-1"></span>
+                                <span class="text-[9px] font-bold text-slate-500">Tanda Tangan Agen</span>
+                            </div>
+
+                            <!-- Gold Badge Area -->
+                            <div class="relative w-16 h-16 flex items-center justify-center flex-shrink-0">
+                                <div id="cert-gold-badge"
+                                    class="absolute inset-0 bg-[#ffd653] border-4 border-brandDark rounded-full flex items-center justify-center neo-shadow-sm scale-75 opacity-25 transition-all duration-500">
+                                    <i class="fa-solid fa-award text-2xl text-brandDark"></i>
+                                </div>
+                                <span class="text-[9px] font-bold text-slate-400 block absolute top-14">CAP RESMI</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer / Navigation Control Bar -->
+        <footer
+            class="border-t-4 border-brandDark p-4 md:px-8 bg-white flex items-center justify-between relative z-10">
+            <button onclick="prevPage()" id="btn-prev"
+                class="px-5 py-2.5 bg-white rounded-xl font-comfortaa font-bold text-sm neo-border neo-shadow-sm hover:bg-slate-100 transition-all text-brandDark">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+            </button>
+
+            <!-- Page Number Indicator Bubble -->
+            <div
+                class="bg-[#e1c4ff] rounded-full neo-border px-4 py-1.5 text-xs font-bold neo-shadow-sm font-comfortaa">
+                Misi: <span id="current-page-num">1</span> dari 5
+            </div>
+
+            <button onclick="nextPage()" id="btn-next"
+                class="px-5 py-2.5 bg-[#dcfd8b] rounded-xl font-comfortaa font-bold text-sm neo-border neo-shadow-sm hover:bg-[#cbf759] transition-all text-brandDark">
+                Lanjut <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+        </footer>
+    </main>
+
+    <!-- JS Logic Application -->
+    <script>
+        // State variables
+        let currentPage = 1;
+        let selectedAvatar = '🐱';
+        let isCertificateSealed = false;
+
+        // Progress States for gamification (True if mission clicked/completed)
+        const progressStats = {
+            p1_sim: false,
+            p2_claims: { hak1: false, hak2: false, hak3: false, tugas1: false, tugas2: false, tugas3: false },
+            p3_monsters: { m1: false, m2: false, m3: false },
+            p4_scenarios: false,
+            p5_sealed: false
+        };
+
+        // Scenario simulation database (Page 4)
+        const scenarios = [
+            {
+                text: '"Bolehkah meminjam pensil teman tanpa meminta izin?"',
+                correct: 'yellow',
+                explanation: 'Bagus! Kamu harus selalu izin (Kuning) agar temanmu tidak kebingungan mencarinya.'
+            },
+            {
+                text: '"Ada yang menyentuh bagian tubuh rahasia yang tertutup baju dalam dan membuatmu tidak nyaman."',
+                correct: 'red',
+                explanation: 'Benar sekali! Teriaklah "TIDAK!" (Merah), lari, dan lapor ke orang dewasa tepercaya.'
+            },
+            {
+                text: '"Saling berbagi mainan secara adil di taman sekolah."',
+                correct: 'green',
+                explanation: 'Luar biasa! Itu adalah tindakan Hijau (Berbagi) yang membuat semua anak bahagia.'
+            }
+        ];
+        let currentScenarioIndex = 0;
+
+        // Signature Canvas variables
+        let canvas, ctx;
+        let drawing = false;
+
+        // Sound Synthesis (Web Audio API)
+        function playAppSound(type) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'success') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.1);
+                } else if (type === 'defeat') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.25);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                }
+            } catch (e) {
+                // AudioContext might be blocked by browser sandbox
+            }
+        }
+
+        // Custom Toast Notification System
+        function showCustomToast(text, iconClass = "fa-solid fa-circle-check") {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastMessage.innerText = text;
+            toastIcon.innerHTML = `<i class="${iconClass} text-yellow-400"></i>`;
+
+            toast.classList.remove('-translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('-translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3500);
+        }
+
+        // Initialize Canvas & Event Listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            initCanvas();
+            updatePageUI();
+            updateLevelTracker();
+        });
+
+        // Initialize Signature Pad Canvas
+        function initCanvas() {
+            canvas = document.getElementById('signature-canvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+
+            // Set canvas resolution matching displaying size
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#1e293b';
+
+            // Desktop events
+            canvas.addEventListener('mousedown', (e) => {
+                drawing = true;
+                draw(e);
+            });
+            canvas.addEventListener('mouseup', () => {
+                drawing = false;
+                ctx.beginPath();
+                updateSignaturePreview();
+            });
+            canvas.addEventListener('mousemove', draw);
+
+            // Mobile touch events
+            canvas.addEventListener('touchstart', (e) => {
+                drawing = true;
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                ctx.beginPath();
+                ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+                e.preventDefault();
+            });
+            canvas.addEventListener('touchmove', (e) => {
+                if (!drawing) return;
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+                ctx.stroke();
+                e.preventDefault();
+            });
+            canvas.addEventListener('touchend', () => {
+                drawing = false;
+                updateSignaturePreview();
+            });
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        function clearSignatureCanvas() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('signature-preview').classList.add('hidden');
+            document.getElementById('signature-placeholder').classList.remove('hidden');
+            playAppSound('click');
+        }
+
+        function updateSignaturePreview() {
+            const preview = document.getElementById('signature-preview');
+            const placeholder = document.getElementById('signature-placeholder');
+            const dataUrl = canvas.toDataURL();
+
+            // Draw dummy stroke test
+            preview.src = dataUrl;
+            preview.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+        }
+
+        // Navigation controls
+        function changePage(pageNum) {
+            if (pageNum < 1 || pageNum > 5) return;
+            playAppSound('click');
+            currentPage = pageNum;
+            updatePageUI();
+
+            // Reset and resize canvas if we hit page 5
+            if (currentPage === 5) {
+                setTimeout(() => {
+                    initCanvas();
+                }, 50);
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < 5) {
+                currentPage++;
+                playAppSound('click');
+                updatePageUI();
+                if (currentPage === 5) {
+                    setTimeout(() => { initCanvas(); }, 50);
+                }
+            } else {
+                // Reached final
+                if (isCertificateSealed) {
+                    createConfettiParticles();
+                    showCustomToast("Kamu adalah Agen Kedamaian Resmi! Bagikan prestasimu! 🏆", "fa-solid fa-trophy");
+                } else {
+                    showCustomToast("Goreskan tanda tangan & ketuk 'Kunci Cap Komitmen' terlebih dulu!", "fa-solid fa-pen-nib");
+                }
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                playAppSound('click');
+                updatePageUI();
+            }
+        }
+
+        // Hide/Show page panels based on currentPage State
+        function updatePageUI() {
+            document.querySelectorAll('.page-content').forEach((p) => p.classList.add('hidden'));
+            document.getElementById(`page-${currentPage}`).classList.remove('hidden');
+
+            document.querySelectorAll('nav button').forEach((b) => b.classList.remove('active-tab'));
+            document.getElementById(`tab-${currentPage}`).classList.add('active-tab');
+
+            document.getElementById('current-page-num').innerText = currentPage;
+
+            // Handle Nav Button Visibilities/Text
+            const nextBtn = document.getElementById('btn-next');
+            if (currentPage === 5) {
+                nextBtn.innerHTML = 'Klaim Lencana! 🏆';
+            } else {
+                nextBtn.innerHTML = 'Lanjut <i class="fa-solid fa-arrow-right ml-1"></i>';
+            }
+
+            const prevBtn = document.getElementById('btn-prev');
+            if (currentPage === 1) {
+                prevBtn.classList.add('invisible');
+            } else {
+                prevBtn.classList.remove('invisible');
+            }
+
+            updateLevelTracker();
+        }
+
+        // Dynamic Level Tracker (Gamified Progress)
+        function updateLevelTracker() {
+            let totalSteps = 12; // 1 simulator + 6 claims + 3 monsters + 1 scenarios + 1 certificate
+            let completedSteps = 0;
+
+            if (progressStats.p1_sim) completedSteps += 1;
+
+            // Page 2 claims progress counter
+            Object.values(progressStats.p2_claims).forEach(val => {
+                if (val) completedSteps += 1;
+            });
+
+            // Page 3 monsters progress counter
+            Object.values(progressStats.p3_monsters).forEach(val => {
+                if (val) completedSteps += 1;
+            });
+
+            if (progressStats.p4_scenarios) completedSteps += 1;
+            if (progressStats.p5_sealed) completedSteps += 1;
+
+            const percentage = Math.round((completedSteps / totalSteps) * 100);
+
+            // Adjust to minimum 10% to look better
+            const renderPercentage = percentage < 10 ? 10 : percentage;
+
+            document.getElementById('level-progress-bar').style.width = `${renderPercentage}%`;
+            document.getElementById('progress-percentage-text').innerText = `${renderPercentage}%`;
+
+            // Adjust Title Ranks
+            const rankText = document.getElementById('agent-rank-text');
+            if (percentage < 30) {
+                rankText.innerText = 'Calon Agen ⭐';
+            } else if (percentage >= 30 && percentage < 70) {
+                rankText.innerText = 'Agen Pelatih ⭐⭐';
+            } else if (percentage >= 70 && percentage < 100) {
+                rankText.innerText = 'Penjaga Kota ⭐⭐⭐';
+            } else {
+                rankText.innerText = 'AGEN ADI SAKTI 👑';
+            }
+        }
+
+        // PAGE 1: Aturan Main Simulator Logic
+        function toggleSimulator(state) {
+            playAppSound('click');
+            const screen = document.getElementById('simulator-screen');
+            const chaosDiv = document.getElementById('sim-chaos');
+            const peaceDiv = document.getElementById('sim-peace');
+            const btnChaos = document.getElementById('sim-btn-chaos');
+            const btnPeace = document.getElementById('sim-btn-peace');
+
+            if (state === 'peace') {
+                screen.style.backgroundColor = '#dcfce7'; // green-100
+                chaosDiv.classList.add('hidden');
+                peaceDiv.classList.remove('hidden');
+                btnPeace.classList.add('active-tab');
+                btnChaos.classList.remove('bg-red-300');
+                btnChaos.classList.add('bg-white');
+
+                // Unlock progress points
+                if (!progressStats.p1_sim) {
+                    progressStats.p1_sim = true;
+                    playAppSound('success');
+                    showCustomToast("Hebat! Aturan mengantarkan ketertiban & senyuman.");
+                }
+            } else {
+                screen.style.backgroundColor = '#fee2e2'; // red-100
+                chaosDiv.classList.remove('hidden');
+                peaceDiv.classList.add('hidden');
+                btnChaos.classList.add('bg-red-300');
+                btnPeace.classList.remove('active-tab');
+            }
+            updateLevelTracker();
+        }
+
+        // PAGE 2: Claim Powers & Duties
+        function unlockPower(id, text) {
+            playAppSound('click');
+            const btn = document.getElementById(`power-${id}`);
+            const badge = btn.querySelector('.badge-status');
+
+            if (!progressStats.p2_claims[id]) {
+                progressStats.p2_claims[id] = true;
+                badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+                btn.classList.add('bg-emerald-50', 'border-emerald-500');
+
+                // Show power description in display box
+                const detailBox = document.getElementById('power-details-box');
+                detailBox.innerHTML = `🛡️ <span class="font-bold font-comfortaa">AKTIF:</span> ${text}`;
+                detailBox.classList.remove('hidden');
+
+                playAppSound('success');
+                showCustomToast("Komitmen Diaktifkan! 🌟");
+            }
+            updateLevelTracker();
+        }
+
+        // PAGE 3: Defeat Bullying Monsters
+        function defeatMonster(id, text) {
+            playAppSound('defeat');
+            const card = document.getElementById(`monster-card-${id}`);
+            const icon = document.getElementById(`monster-icon-${id}`);
+            const btn = document.getElementById(`monster-btn-${id}`);
+
+            if (!progressStats.p3_monsters[`m${id}`]) {
+                progressStats.p3_monsters[`m${id}`] = true;
+
+                // Visual transformation of monster
+                card.classList.remove('bg-[#fee2e2]');
+                card.classList.add('bg-emerald-100', 'border-emerald-500');
+
+                // Change emoji to friendly
+                if (id === 1) icon.innerText = '😇';
+                if (id === 2) icon.innerText = '🤖';
+                if (id === 3) icon.innerText = '🐱';
+
+                btn.innerText = 'Bersahabat! ✅';
+                btn.className = 'w-full py-2 bg-emerald-400 text-brandDark neo-border rounded-xl font-bold text-sm neo-shadow-sm hover:bg-emerald-500 transition-all';
+
+                showCustomToast(text, "fa-solid fa-shield-heart");
+            }
+            updateLevelTracker();
+        }
+
+        // PAGE 4: Traffic Light Simulator
+        function submitScenarioChoice(color) {
+            playAppSound('click');
+            const activeScenario = scenarios[currentScenarioIndex];
+            const feedback = document.getElementById('scenario-feedback');
+
+            // Reset light backgrounds
+            document.getElementById('light-red').className = "w-16 h-16 rounded-full border-4 border-slate-900 bg-red-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
+            document.getElementById('light-yellow').className = "w-16 h-16 rounded-full border-4 border-slate-900 bg-yellow-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
+            document.getElementById('light-green').className = "w-16 h-16 rounded-full border-4 border-slate-900 bg-emerald-950 transition-all duration-300 flex items-center justify-center text-xl shadow-[inset_0_4px_10px_rgba(0,0,0,0.6)]";
+
+            // Turn on selected light visually
+            if (color === 'red') {
+                document.getElementById('light-red').className = "w-16 h-16 rounded-full border-4 border-brandDark bg-red-500 flex items-center justify-center text-2xl shadow-[0_0_20px_#ef4444]";
+            } else if (color === 'yellow') {
+                document.getElementById('light-yellow').className = "w-16 h-16 rounded-full border-4 border-brandDark bg-yellow-400 flex items-center justify-center text-2xl shadow-[0_0_20px_#facc15]";
+            } else if (color === 'green') {
+                document.getElementById('light-green').className = "w-16 h-16 rounded-full border-4 border-brandDark bg-emerald-400 flex items-center justify-center text-2xl shadow-[0_0_20px_#34d399]";
+            }
+
+            if (color === activeScenario.correct) {
+                playAppSound('success');
+                feedback.innerText = activeScenario.explanation;
+                feedback.className = "p-3 bg-emerald-100 border-2 border-emerald-500 rounded-xl text-xs font-bold text-slate-800 text-center animate-pulse";
+                feedback.classList.remove('hidden');
+
+                // Level up scenarios on correct answer
+                setTimeout(() => {
+                    if (currentScenarioIndex < scenarios.length - 1) {
+                        currentScenarioIndex++;
+                        document.getElementById('scenario-question-title').innerText = `Skenario ${currentScenarioIndex + 1} dari 3`;
+                        document.getElementById('scenario-text').innerText = scenarios[currentScenarioIndex].text;
+                        feedback.classList.add('hidden');
+                    } else {
+                        // Fully completed scenario test
+                        progressStats.p4_scenarios = true;
+                        showCustomToast("Hebat! Kamu telah menguasai Radius Batasan Aman 🚦", "fa-solid fa-compass");
+                        updateLevelTracker();
+                    }
+                }, 3000);
+
+            } else {
+                feedback.innerText = "Ups! Kurang tepat, coba ingat fungsi lampu lalu lintas kita kembali.";
+                feedback.className = "p-3 bg-red-100 border-2 border-red-500 rounded-xl text-xs font-bold text-slate-800 text-center";
+                feedback.classList.remove('hidden');
+            }
+        }
+
+        // PAGE 5: Certificate generator functions
+        function selectAvatar(emoji) {
+            playAppSound('click');
+            selectedAvatar = emoji;
+            document.getElementById('cert-agent-avatar').innerText = emoji;
+
+            // Reset borders
+            const avatars = { '🐢': 'turtle', '🐱': 'cat', '🐧': 'penguin', '🐯': 'tiger', '🐰': 'rabbit' };
+            Object.keys(avatars).forEach((key) => {
+                const id = `btn-avatar-${avatars[key]}`;
+                document.getElementById(id).className = "w-10 h-10 rounded-xl bg-slate-100 border-2 border-slate-300 text-xl hover:bg-slate-200 transition-colors flex items-center justify-center";
+            });
+
+            // Set active border style
+            const activeId = `btn-avatar-${avatars[emoji]}`;
+            document.getElementById(activeId).className = "w-10 h-10 rounded-xl bg-brandLime border-2 border-brandDark text-xl flex items-center justify-center shadow-md";
+        }
+
+        function updateCertificate() {
+            const inputVal = document.getElementById('input-agent-name').value;
+            const certName = document.getElementById('cert-agent-name');
+            if (inputVal.trim() !== '') {
+                certName.innerText = inputVal;
+            } else {
+                certName.innerText = "Agen Rahasia";
+            }
+        }
+
+        function sealCertificate() {
+            const inputName = document.getElementById('input-agent-name').value.trim();
+            if (inputName === "") {
+                showCustomToast("Silakan tulis Nama Sandi Agenmu dulu ya!", "fa-solid fa-pen-fancy");
+                return;
+            }
+
+            // Seal activation visualizer
+            playAppSound('success');
+            isCertificateSealed = true;
+            progressStats.p5_sealed = true;
+
+            // Activate Gold stamp
+            const badge = document.getElementById('cert-gold-badge');
+            badge.classList.remove('scale-75', 'opacity-25');
+            badge.classList.add('scale-100', 'opacity-100', 'animate-bounce');
+
+            createConfettiParticles();
+            showCustomToast("Sertifikat Sukses Disegel! Selamat bergabung, Agen! 👑", "fa-solid fa-ribbon");
+            updateLevelTracker();
+        }
+
+        // Confetti Particle Emitter (CSS + JS Pure canvas bypass)
+        function createConfettiParticles() {
+            const body = document.body;
+            const colors = ['#dcfd8b', '#fdd5bd', '#e1c4ff', '#bae6fd', '#ffd653'];
+
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.innerText = ['⭐', '✨', '🎈', '🎉', '✦'][Math.floor(Math.random() * 5)];
+                particle.style.fontSize = `${Math.random() * 20 + 12}px`;
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+
+                // Random destinations
+                const tx = `${(Math.random() - 0.5) * 200}px`;
+                const ty = `${(Math.random() - 0.5) * 200}px`;
+                const rot = `${Math.random() * 360}deg`;
+
+                particle.style.setProperty('--tx', tx);
+                particle.style.setProperty('--ty', ty);
+                particle.style.setProperty('--rot', rot);
+
+                body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 800);
+            }
+        }
+    </script>
+</body>
+
+</html>
